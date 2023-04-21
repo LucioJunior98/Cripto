@@ -1,0 +1,15 @@
+C:\Users\Familia\Desktop\CriptoRSA\bin\Debug\net6.0\CriptoRSA.exe
+C:\Users\Familia\Desktop\CriptoRSA\bin\Debug\net6.0\CriptoRSA.deps.json
+C:\Users\Familia\Desktop\CriptoRSA\bin\Debug\net6.0\CriptoRSA.runtimeconfig.json
+C:\Users\Familia\Desktop\CriptoRSA\bin\Debug\net6.0\CriptoRSA.dll
+C:\Users\Familia\Desktop\CriptoRSA\bin\Debug\net6.0\CriptoRSA.pdb
+C:\Users\Familia\Desktop\CriptoRSA\obj\Debug\net6.0\CriptoRSA.csproj.AssemblyReference.cache
+C:\Users\Familia\Desktop\CriptoRSA\obj\Debug\net6.0\CriptoRSA.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Familia\Desktop\CriptoRSA\obj\Debug\net6.0\CriptoRSA.AssemblyInfoInputs.cache
+C:\Users\Familia\Desktop\CriptoRSA\obj\Debug\net6.0\CriptoRSA.AssemblyInfo.cs
+C:\Users\Familia\Desktop\CriptoRSA\obj\Debug\net6.0\CriptoRSA.csproj.CoreCompileInputs.cache
+C:\Users\Familia\Desktop\CriptoRSA\obj\Debug\net6.0\CriptoRSA.dll
+C:\Users\Familia\Desktop\CriptoRSA\obj\Debug\net6.0\refint\CriptoRSA.dll
+C:\Users\Familia\Desktop\CriptoRSA\obj\Debug\net6.0\CriptoRSA.pdb
+C:\Users\Familia\Desktop\CriptoRSA\obj\Debug\net6.0\CriptoRSA.genruntimeconfig.cache
+C:\Users\Familia\Desktop\CriptoRSA\obj\Debug\net6.0\ref\CriptoRSA.dll
