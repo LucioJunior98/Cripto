@@ -4,36 +4,60 @@ namespace CriptoRSA.RSA
 {
     public class RSACripto
     {
-        private static RSACryptoServiceProvider rsa = null;
+        private RSACryptoServiceProvider rsa = null;
+        public string PublicKey = string.Empty;
+        public string PrivateKey = string.Empty;
 
-        public RSACripto(out string publicKey, out string privateKey)
+        public RSACripto()
         {
             rsa = new RSACryptoServiceProvider();
 
             rsa.KeySize = 1024;
 
-            publicKey = rsa.ToXmlString(false);
-            privateKey = rsa.ToXmlString(true);
+            PublicKey = rsa.ToXmlString(false);
+            PrivateKey = rsa.ToXmlString(true);
         }
 
-        public static byte[] Encrypt(byte[] dataToEncrypt)
+        public byte[] Encrypt(byte[] dataToEncrypt)
         {
-            if(rsa == null)
+            try
             {
-                rsa = new RSACryptoServiceProvider();
-            }
+                byte[] dataEncrypt;
 
-            return rsa.Encrypt(dataToEncrypt, false);
+                if (rsa == null)
+                {
+                    rsa = new RSACryptoServiceProvider();
+                    rsa.KeySize = 1024;
+
+                    PublicKey = rsa.ToXmlString(true);
+                    PrivateKey = rsa.ToXmlString(false);
+
+                    dataEncrypt = rsa.Encrypt(dataToEncrypt, false);
+                }
+                else
+                {
+                    rsa.FromXmlString(PublicKey);
+                    rsa.PersistKeyInCsp = true;
+
+                    dataEncrypt = rsa.Encrypt(dataToEncrypt, false);
+                }
+
+                return dataEncrypt;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
-        public static byte[] Decrypt(byte[] dataToDecrypt)
+        public byte[] Decrypt(byte[] dataToDecrypt)
         {
             byte[] dataDecrypt;
 
-            using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider())
-            {
-                dataDecrypt = rsa.Decrypt(dataToDecrypt, false);
-            }
+            rsa.FromXmlString(PrivateKey);
+            rsa.PersistKeyInCsp = true;
+
+            dataDecrypt = rsa.Decrypt(dataToDecrypt, false);
 
             return dataDecrypt;
         }

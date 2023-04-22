@@ -1,105 +1,94 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
+using System.Text.Encodings.Web;
+using CriptoRSA.RSA;
 
 namespace CriptoRSA
 {
     internal class Program
     {
-        public static string publicKey = string.Empty;
-        public static string privateKey = string.Empty;
-
         static void Main(string[] args)
         {
-            string message = "Tem que criptografar isso daqui";
-            Console.WriteLine("Mensage para criptografar: " + message);
-            byte[] messageEncrypt = null;
-            byte[] messageEncrypt2 = null;
-            string messageDecrypt = string.Empty;
-            string messageDecrypt2 = string.Empty;
-            byte[] encode = Encoding.UTF8.GetBytes(message);
-
-            using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider())
+            try
             {
-                rsa.KeySize = 1024;
+                var cripto = new RSACripto();
+                string messageCripto = string.Empty;
+                string op = string.Empty;
+                List<string> multiCriptografia = new List<string>();
+                List<byte[]> encondes = new List<byte[]>();
+                byte[] encode;
 
-                publicKey = rsa.ToXmlString(true);
-                privateKey = rsa.ToXmlString(false);
+                Console.WriteLine("Digite valor a ser criptografado: ");
+                messageCripto = Console.ReadLine();
 
-                messageEncrypt = rsa.Encrypt(encode, false);
+                if (string.IsNullOrEmpty(messageCripto))
+                    throw new Exception("Digite a menssage");
 
-                rsa.Clear();
-            }
+                encode = Encoding.UTF8.GetBytes(messageCripto);
 
-            Console.WriteLine("MessageCripto: " + Encoding.UTF8.GetString(messageEncrypt));
+                encondes.Add(cripto.Encrypt(encode));
+                multiCriptografia.Add(Encoding.UTF8.GetString(encondes[0]));
 
-            Console.WriteLine("Criptografar de novo?");
+                Console.WriteLine("Menssagem criptografada: 0 - " + multiCriptografia[0]);
 
-            bool isCripto = Convert.ToBoolean(Console.ReadLine());
-
-            if (isCripto)
-            {
-                using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider())
+                bool loop = true;
+                while (loop)
                 {
-                    rsa.FromXmlString(publicKey);
-                    rsa.PersistKeyInCsp = true;
+                    Console.WriteLine("Deseja gerar outra Criptogafia ou Descriptografar Mensagem ?");
+                    Console.WriteLine("Opções: Criptografar / Descriptografar / Sair");
+                    op = Console.ReadLine();
 
-                    rsa.KeySize = 1024;
+                    switch (op)
+                    {
+                        case "Criptografar":
 
-                    messageEncrypt2 = rsa.Encrypt(encode, false);
+                            if (multiCriptografia.Count > 5)
+                                Console.WriteLine("Limite maximo de Criptografia atigido");
+                            else
+                            {
+                                encondes.Add(cripto.Encrypt(encode));
 
-                    rsa.Clear();
+                                encondes.ForEach(x =>
+                                {
+                                    multiCriptografia.Add(Encoding.UTF8.GetString(x));
+                                });
+
+                                int count = 0;
+
+                                multiCriptografia.ForEach(x => {
+
+                                    Console.WriteLine("Menssagem criptografada: " + count + " - " + x);
+                                    count++;
+                                });
+                            }                         
+
+                            break;
+                        case "Descriptografar":
+                            Console.WriteLine("Quais das Criptografia? - Escolha por Indice");
+                            string opIndex = Console.ReadLine();
+
+                            int index = Convert.ToInt32(opIndex);
+
+                            string decode = Encoding.UTF8.GetString(cripto.Decrypt(encondes[index]));
+
+                            Console.WriteLine("Descriptografia: " + decode);
+
+                            break;
+                        case "Sair":
+                            loop = false;
+                            break;
+                        default:
+                            throw new Exception("Opcao invalida");
+                    }
                 }
 
+                Console.ReadKey();
             }
-
-            Console.WriteLine("MessageCripto2: " + Encoding.UTF8.GetString(messageEncrypt2));
-
-            Console.WriteLine("Descriptografar?");
-
-            bool isDescripto = Convert.ToBoolean(Console.ReadLine());
-
-            if (isDescripto)
+            catch (Exception ex)
             {
-                using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider())
-                {
-                    rsa.FromXmlString(privateKey);
-                    rsa.PersistKeyInCsp = true;
-
-                    rsa.KeySize = 1024;
-
-                    messageDecrypt = Encoding.UTF8.GetString(rsa.Decrypt(messageEncrypt, false));
-
-                    rsa.Clear();
-                }
-
-                Console.WriteLine("Descripto: " + messageDecrypt);
-
-                Console.ReadLine();
-            } 
-            
-            Console.WriteLine("Descriptografar?");
-
-            bool isDescripto2 = Convert.ToBoolean(Console.ReadLine());
-
-            if (isDescripto2)
-            {
-                using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider())
-                {
-                    rsa.FromXmlString(privateKey);
-                    rsa.PersistKeyInCsp = true;
-
-                    rsa.KeySize = 1024;
-
-                    messageDecrypt2 = Encoding.UTF8.GetString(rsa.Decrypt(messageEncrypt2, false));
-
-                    rsa.Clear();
-                }
-
-                Console.WriteLine("Descripto: " + messageDecrypt2);
-
-                Console.ReadLine();
+                Console.WriteLine(ex.Message);
+                Main(args);
             }
-
         }
     }
 }
