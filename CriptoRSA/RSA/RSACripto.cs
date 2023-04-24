@@ -2,7 +2,7 @@
 
 namespace CriptoRSA.RSA
 {
-    public class RSACripto
+    public class RSACripto : IDisposable
     {
         private RSACryptoServiceProvider rsa = null;
         public string PublicKey = string.Empty;
@@ -12,7 +12,7 @@ namespace CriptoRSA.RSA
         {
             rsa = new RSACryptoServiceProvider();
 
-            rsa.KeySize = 1024;
+            rsa.KeySize = 512;
 
             PublicKey = rsa.ToXmlString(false);
             PrivateKey = rsa.ToXmlString(true);
@@ -60,6 +60,11 @@ namespace CriptoRSA.RSA
             dataDecrypt = rsa.Decrypt(dataToDecrypt, false);
 
             return dataDecrypt;
+        }
+
+        public void Dispose()
+        {
+            rsa.Dispose();
         }
     }
 }

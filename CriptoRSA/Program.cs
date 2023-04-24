@@ -9,9 +9,10 @@ namespace CriptoRSA
     {
         static void Main(string[] args)
         {
+            RSACripto cripto = new RSACripto();
+
             try
             {
-                var cripto = new RSACripto();
                 string messageCripto = string.Empty;
                 string op = string.Empty;
                 List<string> multiCriptografia = new List<string>();
@@ -43,10 +44,10 @@ namespace CriptoRSA
                         case "Criptografar":
 
                             if (multiCriptografia.Count > 5)
-                                Console.WriteLine("Limite maximo de Criptografia atigido");
+                                throw new Exception("Limite maximo de Criptografia atigido");
                             else
                             {
-                                encondes.Add(cripto.Encrypt(encode));
+                                enconde0s.Add(cripto.Encrypt(encode));
 
                                 encondes.ForEach(x =>
                                 {
@@ -55,12 +56,13 @@ namespace CriptoRSA
 
                                 int count = 0;
 
-                                multiCriptografia.ForEach(x => {
+                                multiCriptografia.ForEach(x =>
+                                {
 
                                     Console.WriteLine("Menssagem criptografada: " + count + " - " + x);
                                     count++;
                                 });
-                            }                         
+                            }
 
                             break;
                         case "Descriptografar":
@@ -87,6 +89,12 @@ namespace CriptoRSA
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                if (cripto != null)
+                    cripto.Dispose();
+
                 Main(args);
             }
         }
