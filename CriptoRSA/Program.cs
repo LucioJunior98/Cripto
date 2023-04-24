@@ -47,7 +47,7 @@ namespace CriptoRSA
                                 throw new Exception("Limite maximo de Criptografia atigido");
                             else
                             {
-                                enconde0s.Add(cripto.Encrypt(encode));
+                                encondes.Add(cripto.Encrypt(encode));
 
                                 encondes.ForEach(x =>
                                 {
